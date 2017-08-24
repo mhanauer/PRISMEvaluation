@@ -29,7 +29,7 @@ head(data1)
 
 data2 = readWorksheetFromFile("Indiana School Health Conference.xlsx", sheet = 1, startCol = 6, endCol = 15)
 colnames(data2) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
-head(data1)
+head(data2)
 data2$site = rep(2,length(data2$`Pre-Competent`))
 
 data3 = readWorksheetFromFile("ISCA Fall 2015.xlsx", sheet = 1, startCol = 8, endCol = 17)
@@ -85,13 +85,16 @@ head(data12)
 data12$site = rep(12,length(data12$`Pre-Competent`))
 
 data13 = readWorksheetFromFile("Merriville Training 7272016.xlsx", sheet = 1, startCol = 8, endCol = 17)
+
 colnames(data13) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
 head(data13)
 data13$site = rep(13,length(data13$`Pre-Competent`))
+data13 = as.data.frame(data13[-c(1),])
 
-data14 = readWorksheetFromFile("Merriville Training 7272016.xlsx", sheet = 1, startCol = 7, endCol = 16)
+data14 = readWorksheetFromFile("Merriville Training 7272016.xlsx", sheet = 1, startCol = 8, endCol = 17)
 colnames(data14) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
 head(data14)
+data14 = data14[-c(1),]
 data14$site = rep(14,length(data14$`Pre-Competent`))
 
 data15 = readWorksheetFromFile("Terre Haute 7272016.xlsx", sheet = 1, startCol = 8, endCol = 17)
@@ -129,6 +132,78 @@ data
 ```
 Now figure out the levels for each and make sense of each 
 ```{r}
+dataPreComp = as.factor(data$`Pre-Competent`)
+levels(dataPreComp)
+data = as.data.frame(data)
+
+dataPreCon = as.factor(data$`Pre-Confident`)
+levels(dataPreCon)
+data = as.data.frame(data)
+
+data = as.data.frame(data)
+dataPreComfort = as.factor(data$`Pre-Comfort`)
+levels(dataPreComfort)
+data = as.data.frame(data)
+
+
+data = as.data.frame(data)
+dataPostComp = as.factor(data$`Post-Competent`)
+head(dataPostComp)
+levels(dataPostComp)
+data = as.data.frame(data)
+data$`Post-Competent`
+
+data = as.data.frame(data)
+data$`Post-Confident`
+dataPostCon = as.factor(data$`Post-Confident`)
+head(dataPostCon)
+levels(dataPostCon)
+data = as.data.frame(data)
+
+# Here need to recode based upon this.  You are grabbing the wrong values somewhere.
+data = as.data.frame(data)
+data$`Post-Comfort`
+dataPostConf = as.factor(data$`Post-Comfort`)
+head(dataPostConf)
+levels(dataPostConf)
+data = as.data.frame(data)
+
+
+data = as.data.frame(data)
+data$Learned
+dataLearned = as.factor(data$Learned)
+head(dataLearned)
+levels(dataLearned)
+data = as.data.frame(data)
+
+data = as.data.frame(data)
+data$Effective
+dataEffective = as.factor(data$Effective)
+head(dataEffective)
+levels(dataEffective)
+data = as.data.frame(data)
+
+data = as.data.frame(data)
+data$`Came Away With`
+dataCAW = as.factor(data$`Came Away With`)
+head(dataCAW)
+levels(dataCAW)
+data = as.data.frame(data)
+
+data = as.data.frame(data)
+data$Recommend
+dataRec = as.factor(data$Recommend)
+head(dataRec)
+levels(dataRec)
+data = as.data.frame(data)
+
+data = apply(data,2, function(x){ifelse(x == "[Crossed out 7] 9 ", 9, ifelse(x == "2 <-> 3", 2.5, ifelse(x == "7 & 10", 8.5, ifelse(x == "7&8", 7.5, ifelse(x == "8-9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "7_8" , 7.5, ifelse(x == "NR", NA, ifelse(x == "6-7", 6.5, ifelse(x == "7_9", 8, ifelse(x == "8_10", 9, ifelse(x == "9 10", 9.5, ifelse(x =="4-5", 4.5, ifelse(x == "7-9", 8, ifelse(x == "N/A", NA, ifelse(x =="\"N/A\"", NA, ifelse(x == "3 I can't create it.", 3, ifelse(x == "6_7", 6.5, ifelse(x == "8&9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "[Crossed out 9] 7", 7, ifelse(x == "3_4", 3.5, ifelse(x == "5 6", 5.5, ifelse(x == "7-8", 8.5, ifelse(x == "9-10", 9.5, ifelse(x == "Not sure", NA, ifelse(x == "9 (10 crossed out) ", 9, ifelse(x == "N/A", NA,ifelse(x == "9 10 ", 9.5, ifelse(x == "[Crossed out 7] 9", 9, ifelse(x == "6 7 ", 6.5, ifelse(x == "9&10", 9.5, ifelse(x == "[Crossed out 9] 10", 10, ifelse(x =="5 Resources helpful", 5, ifelse(x == "7 (Crossed out \"4\")", 7, ifelse(x == "8_9", 8.5, ifelse(x == "9_10", 9.5, ifelse(x == "99", NA, ifelse(x == "[Scribbled out 5]", NA, ifelse(x == "4_5" , 4.5, ifelse(x == "8-8", 8,ifelse(x == "10 (\"Crossed out \"7\")", 10,ifelse(x == "10 (Crossed out 9)", 10, ifelse(x == "5 6 ", 5.5, ifelse(x == "6 I mean, for myself…", 6, ifelse(x == "7 (5 crossed out)", 7, ifelse(x == "9_11", 10.5, ifelse(x == "\"Better\"", NA, x ))))))))))))))))))))))))))))))))))))))))))))))))})
+data = as.data.frame(data)
+
+data = apply(data,2, function(x){ifelse(x == "[Scribbled out 5 and underlined 8]", 8, ifelse(x == "10 (Crossed out \"7\")", 10, ifelse(x == "2 \"Willing but a lot to learn", 2, ifelse(x == "5 to 7", 6, ifelse(x == "6 (3 crossed out)", 6, ifelse(x == "7 Still need practice!!", 7 , ifelse(x == "9 10 sometimes I mess up.", 9.5, ifelse(x== "As long as I know what they are.", 9, ifelse(x == "9_12", 10.5, ifelse(x == "S", NA, ifelse(x == "Same response as on the PRE-ASSESSMENT.", NA, ifelse(x == "A + Strongly Agree", 7, ifelse(x== "Strongly Agree", 7, ifelse(x == "Strongly Disagree", 1, ifelse(x == "Disagree", 3, ifelse(x == "Neutral", 4, ifelse(x == "Agree", 6, ifelse(x == "Strongly Agree", 7, ifelse(x == "Circled Strongly Agree and Agree", 6, ifelse(x == "Neural", 4, ifelse(x== "Stringly Agree", 7,ifelse(x == "Strongly Agree [Crossed out \"Strongly Disagree\"]", 7, ifelse(x == "Agree *Strongly Agree*", 6, ifelse(x == "D_N", NA, ifelse(x == "N + Agree", 4, ifelse(x == "Neutral ", 3, ifelse(x == "Nuetral", 3,ifelse(x == "Strongly agree", 5, ifelse(x == "Strongly Agree ", 7,ifelse(x == "N_A", NA, ifelse(x == "Agree ", 6, ifelse(x== "Agree Strongly Agree", 7, ifelse(x == "Stongly Agree", 7, ifelse(x == "[circled \"LGBTQ+ youth\"]", NA, ifelse(x == "Agree Don't directly work w/youth in my job.", 6, ifelse(x == "I learned a lot from the research data statements. That was eye popping to me. I plan to share those findings to my students.", NA, ifelse(x == "Strongly Agree (Police Dept. Sherifs Dept.)", 7, ifelse(x =="Strongly Agree!", 7, x))))))))))))))))))))))))))))))))))))))})
+data = as.data.frame(data)
+
+# I need to add somewhat disagree at 2, and somewhat agree at 5 and change alll agrees and strongly agrees to right one 
 
 ```
 
