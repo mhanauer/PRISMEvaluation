@@ -205,6 +205,7 @@ data = apply(data,2, function(x){ifelse(x == "[Scribbled out 5 and underlined 8]
 data = as.data.frame(data)
 data = apply(data,2, function(x){ifelse(x == "\"Unsure\"", NA, ifelse(x == "?", NA, ifelse(x == "[Crossed out 8] 10", 10, ifelse(x == "[Crossed out 8] 5 I usually use their name, so I don't make a mistake and offend someone.", 5, ifelse(x == "10 -Had transgender student in class and referred to the student's preferred gender pronouns", 10, ifelse(x == "10 I see no reason why you could object to this as long as you know the preference.", 10, ifelse(x == "2_3", 2.5, ifelse(x ==  "4 My fear is of offending the person by doing something wrong." , 4, ifelse(x=="5_7", 6,ifelse(x == "6 to 10 [wrote \"competent\"]", 8, ifelse(x== "6&7", 6.5, ifelse(x == "8 I'm comfortable using them I'm just horrible @ remembering!!!" , 8, ifelse(x =="N/A 9", 9, ifelse(x == "Using the pronouns to refer to that someone: 9 using the pronouns to refer to myself, or for myself: would depend on what the pronouns were.", NA, ifelse(x == "5_6", 5.5, ifelse(x =="6 I mean, for myself…", 6, ifelse(x == "77", 7, ifelse(x== "6 I mean, for myself…", 6, ifelse(x == "10 [wrote \"& confident\"]", 10, ifelse(x == "9 As long as I know what they are.", 9, ifelse(x =="WOULD NEED TO PRACTICE THIS ONE seemed to go over fast - future maybe give examples more", NA, x)))))))))))))))))))))})
 dat = as.data.frame(data)
+dim(dat)
 ```
 Now set up t-tests if there is a difference bewteen post and pre.  Use Wilcoxon Signed-Ranks Test: http://www.uv.es/visualstats/vista-frames/help/lecturenotes/lecture09/lec9part4.html
 
@@ -221,13 +222,13 @@ dat = as.data.frame(na.omit(dat))
 wilcox.test(dat$Pre.Competent, dat$Post.Competent, paired=TRUE)
 wilcox.test(dat$Pre.Confident, dat$Post.Confident, paired=TRUE)
 wilcox.test(dat$Pre.Comfort, dat$Post.Comfort, paired=TRUE)
-datMedian = as.data.frame(t((apply(dat, 2, median)))); datMeans
+datMean = as.data.frame(t((apply(dat, 2, mean)))); datMean
 
-datMedian$CompInc = (datMedian$Post.Competent-datMedian$Pre.Competent)/datMedian$Pre.Competent
+datMean$CompInc = (datMean$Post.Competent-datMean$Pre.Competent)/datMean$Pre.Competent
 
-datMedian$ConfiInc =(datMedian$Post.Confident-datMedian$Pre.Confident)/datMedian$Pre.Confident
+datMean$ConfiInc =(datMean$Post.Confident-datMean$Pre.Confident)/datMean$Pre.Confident
 
-datMedian$ComiInc =(datMedian$Post.Comfort-datMedian$Pre.Comfort)/datMedian$Pre.Comfort
-datMedian = round(datMedian,2); datMedian
+datMean$ComiInc =(datMean$Post.Comfort-datMean$Pre.Comfort)/datMean$Pre.Comfort
+datMean = round(datMean,2); datMean
 ```
 Now we need to figure out 
