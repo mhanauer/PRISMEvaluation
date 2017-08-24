@@ -18,8 +18,8 @@ Could do a separate analysis on pre and post tests for MCCSC PrePost Tests data 
 
 Pride board training or Allied media data set had a different set of outcomes variables.
 ```{r}
-#setwd("~/Box Sync/Unreviewed Excel Training Data/ Matt'sExcelTraining Data")
-setwd("I:/Unreviewed Excel Training Data/ Matt'sExcelTraining Data")
+setwd("~/Box Sync/Unreviewed Excel Training Data/ Matt'sExcelTraining Data")
+#setwd("I:/Unreviewed Excel Training Data/ Matt'sExcelTraining Data")
 library(XLConnect)
 
 data1 = readWorksheetFromFile("Boys + Girls Club Camp Training 2016.xlsx", sheet = 1, startCol = 8, endCol = 17)
@@ -203,7 +203,31 @@ data = as.data.frame(data)
 
 data = apply(data,2, function(x){ifelse(x == "[Scribbled out 5 and underlined 8]", 8, ifelse(x == "10 (Crossed out \"7\")", 10, ifelse(x == "2 \"Willing but a lot to learn", 2, ifelse(x == "5 to 7", 6, ifelse(x == "6 (3 crossed out)", 6, ifelse(x == "7 Still need practice!!", 7 , ifelse(x == "9 10 sometimes I mess up.", 9.5, ifelse(x== "As long as I know what they are.", 9, ifelse(x == "9_12", 10.5, ifelse(x == "S", NA, ifelse(x == "Same response as on the PRE-ASSESSMENT.", NA, ifelse(x == "A + Strongly Agree", 7, ifelse(x== "Strongly Agree", 7, ifelse(x == "Strongly Disagree", 1, ifelse(x == "Disagree", 3, ifelse(x == "Neutral", 4, ifelse(x == "Agree", 6, ifelse(x == "Strongly Agree", 7, ifelse(x == "Circled Strongly Agree and Agree", 6, ifelse(x == "Neural", 4, ifelse(x== "Stringly Agree", 7,ifelse(x == "Strongly Agree [Crossed out \"Strongly Disagree\"]", 7, ifelse(x == "Agree *Strongly Agree*", 6, ifelse(x == "D_N", NA, ifelse(x == "N + Agree", 4, ifelse(x == "Neutral ", 3, ifelse(x == "Nuetral", 3,ifelse(x == "Strongly agree", 5, ifelse(x == "Strongly Agree ", 7,ifelse(x == "N_A", NA, ifelse(x == "Agree ", 6, ifelse(x== "Agree Strongly Agree", 7, ifelse(x == "Stongly Agree", 7, ifelse(x == "[circled \"LGBTQ+ youth\"]", NA, ifelse(x == "Agree Don't directly work w/youth in my job.", 6, ifelse(x == "I learned a lot from the research data statements. That was eye popping to me. I plan to share those findings to my students.", NA, ifelse(x == "Strongly Agree (Police Dept. Sherifs Dept.)", 7, ifelse(x =="Strongly Agree!", 7, ifelse(x == " Strongly Agree", 7, x)))))))))))))))))))))))))))))))))))))))})
 data = as.data.frame(data)
-data = apply(data,2, function(x){ifelse(x == "\"Unsure\"", NA, ifelse(x == "?", NA, ifelse(x == "[Crossed out 8] 10", 10, ifelse(x == "[Crossed out 8] 5 I usually use their name, so I don't make a mistake and offend someone.", 5, ifelse(x == "10 -Had transgender student in class and referred to the student's preferred gender pronouns", 10, ifelse(x == "10 I see no reason why you could object to this as long as you know the preference.", 10, ifelse(x == "2_3", 2.5, ifelse(x ==  "4 My fear is of offending the person by doing something wrong." , 4, ifelse(x=="5_7", 6,ifelse(x == "6 to 10 [wrote \"competent\"]", 8, ifelse(x== "6&7", 6.5, ifelse(x == "8 I'm comfortable using them I'm just horrible @ remembering!!!" , 8, ifelse(x =="N/A 9", 9, ifelse(x == "Using the pronouns to refer to that someone: 9 using the pronouns to refer to myself, or for myself: would depend on what the pronouns were.", NA, ifelse(x == "5_6", 5.5, ifelse(x =="6 I mean, for myself…", 6, ifelse(x == "77", 7, ifelse(x== "6 I mean, for myself…", 6, x))))))))))))))))))})
-
+data = apply(data,2, function(x){ifelse(x == "\"Unsure\"", NA, ifelse(x == "?", NA, ifelse(x == "[Crossed out 8] 10", 10, ifelse(x == "[Crossed out 8] 5 I usually use their name, so I don't make a mistake and offend someone.", 5, ifelse(x == "10 -Had transgender student in class and referred to the student's preferred gender pronouns", 10, ifelse(x == "10 I see no reason why you could object to this as long as you know the preference.", 10, ifelse(x == "2_3", 2.5, ifelse(x ==  "4 My fear is of offending the person by doing something wrong." , 4, ifelse(x=="5_7", 6,ifelse(x == "6 to 10 [wrote \"competent\"]", 8, ifelse(x== "6&7", 6.5, ifelse(x == "8 I'm comfortable using them I'm just horrible @ remembering!!!" , 8, ifelse(x =="N/A 9", 9, ifelse(x == "Using the pronouns to refer to that someone: 9 using the pronouns to refer to myself, or for myself: would depend on what the pronouns were.", NA, ifelse(x == "5_6", 5.5, ifelse(x =="6 I mean, for myself…", 6, ifelse(x == "77", 7, ifelse(x== "6 I mean, for myself…", 6, ifelse(x == "10 [wrote \"& confident\"]", 10, ifelse(x == "9 As long as I know what they are.", 9, ifelse(x =="WOULD NEED TO PRACTICE THIS ONE seemed to go over fast - future maybe give examples more", NA, x)))))))))))))))))))))})
+dat = as.data.frame(data)
 ```
+Now set up t-tests if there is a difference bewteen post and pre.  Use Wilcoxon Signed-Ranks Test: http://www.uv.es/visualstats/vista-frames/help/lecturenotes/lecture09/lec9part4.html
 
+Here I am getting the statistically significant tests and the percentage increase in medians.
+
+Also grabing the number of particpants here 954
+```{r}
+library(MASS)
+write.csv(dat, "dat.csv", row.names = FALSE)
+dat = as.data.frame(read.csv("dat.csv", header = TRUE))
+## Grabbing number of particpants before deleting data
+dim(dat)
+dat = as.data.frame(na.omit(dat))
+wilcox.test(dat$Pre.Competent, dat$Post.Competent, paired=TRUE)
+wilcox.test(dat$Pre.Confident, dat$Post.Confident, paired=TRUE)
+wilcox.test(dat$Pre.Comfort, dat$Post.Comfort, paired=TRUE)
+datMedian = as.data.frame(t((apply(dat, 2, median)))); datMeans
+
+datMedian$CompInc = (datMedian$Post.Competent-datMedian$Pre.Competent)/datMedian$Pre.Competent
+
+datMedian$ConfiInc =(datMedian$Post.Confident-datMedian$Pre.Confident)/datMedian$Pre.Confident
+
+datMedian$ComiInc =(datMedian$Post.Comfort-datMedian$Pre.Comfort)/datMedian$Pre.Comfort
+datMedian = round(datMedian,2); datMedian
+```
+Now we need to figure out 
