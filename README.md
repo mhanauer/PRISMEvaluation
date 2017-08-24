@@ -169,9 +169,19 @@ levels(dataPostConf)
 data = as.data.frame(data)
 
 
-data = apply(data,2, function(x){ifelse(x == "[Crossed out 7] 9 ", 9, ifelse(x == "2 <-> 3", 2.5, ifelse(x == "7 & 10", 8.5, ifelse(x == "7&8", 7.5, ifelse(x == "8-9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "7_8" , 7.5, ifelse(x == "NR", NA, ifelse(x == "6-7", 6.5, ifelse(x == "7_9", 8, ifelse(x == "8_10", 9, ifelse(x == "9 10", 9.5, ifelse(x =="4-5", 4.5, ifelse(x == "7-9", 8, ifelse(x == "N/A", NA, ifelse(x =="\"N/A\"", NA, ifelse(x == "3 I can't create it.", 3, ifelse(x == "6_7", 6.5, ifelse(x == "8&9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "[Crossed out 9] 7", 7, ifelse(x == "3_4", 3.5, ifelse(x == "5 6", 5.5, ifelse(x == "7-8", 8.5, ifelse(x == "9-10", 9.5, ifelse(x == "Not sure", NA, ifelse(x == "9 (10 crossed out) ", 9, ifelse(x == "N/A", NA,ifelse(x == "9 10 ", 9.5, ifelse(x == "[Crossed out 7] 9", 9, ifelse(x == "6 7 ", 6.5, ifelse(x == "9&10", 9.5, ifelse(x == "[Crossed out 9] 10", 10, ifelse(x =="5 Resources helpful", 5, ifelse(x == "7 (Crossed out \"4\")", 7, ifelse(x == "8_9", 8.5, ifelse(x == "9_10", 9.5, ifelse(x == "99", NA, ifelse(x == "[Scribbled out 5]", NA, ifelse(x == "4_5" , 4.5, ifelse(x == "8-8", 8,ifelse(x == "10 (\"Crossed out \"7\")", 10,ifelse(x == "10 (Crossed out 9)", 10, ifelse(x == "5 6 ", 5.5, ifelse(x == "6 I mean, for myself…", 6, ifelse(x == "7 (5 crossed out)", 7, ifelse(x == "9_11", 10.5, x)))))))))))))))))))))))))))))))))))))))))))))))})
+data = as.data.frame(data)
+data$Learned
+dataLearned = as.factor(data$Learned)
+head(dataLearned)
+levels(dataLearned)
+data = as.data.frame(data)
+
+data = apply(data,2, function(x){ifelse(x == "[Crossed out 7] 9 ", 9, ifelse(x == "2 <-> 3", 2.5, ifelse(x == "7 & 10", 8.5, ifelse(x == "7&8", 7.5, ifelse(x == "8-9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "7_8" , 7.5, ifelse(x == "NR", NA, ifelse(x == "6-7", 6.5, ifelse(x == "7_9", 8, ifelse(x == "8_10", 9, ifelse(x == "9 10", 9.5, ifelse(x =="4-5", 4.5, ifelse(x == "7-9", 8, ifelse(x == "N/A", NA, ifelse(x =="\"N/A\"", NA, ifelse(x == "3 I can't create it.", 3, ifelse(x == "6_7", 6.5, ifelse(x == "8&9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "[Crossed out 9] 7", 7, ifelse(x == "3_4", 3.5, ifelse(x == "5 6", 5.5, ifelse(x == "7-8", 8.5, ifelse(x == "9-10", 9.5, ifelse(x == "Not sure", NA, ifelse(x == "9 (10 crossed out) ", 9, ifelse(x == "N/A", NA,ifelse(x == "9 10 ", 9.5, ifelse(x == "[Crossed out 7] 9", 9, ifelse(x == "6 7 ", 6.5, ifelse(x == "9&10", 9.5, ifelse(x == "[Crossed out 9] 10", 10, ifelse(x =="5 Resources helpful", 5, ifelse(x == "7 (Crossed out \"4\")", 7, ifelse(x == "8_9", 8.5, ifelse(x == "9_10", 9.5, ifelse(x == "99", NA, ifelse(x == "[Scribbled out 5]", NA, ifelse(x == "4_5" , 4.5, ifelse(x == "8-8", 8,ifelse(x == "10 (\"Crossed out \"7\")", 10,ifelse(x == "10 (Crossed out 9)", 10, ifelse(x == "5 6 ", 5.5, ifelse(x == "6 I mean, for myself…", 6, ifelse(x == "7 (5 crossed out)", 7, ifelse(x == "9_11", 10.5, ifelse(x == "\"Better\"", NA, x ))))))))))))))))))))))))))))))))))))))))))))))))})
+
+data = apply(data, 2, function(x){ifelse(x == "[Scribbled out 5 and underlined 8]", 8, ifelse(x == "10 (Crossed out \"7\")", 10, ifelse(x == "2 \"Willing but a lot to learn", 2, ifelse(x == "5 to 7", 6, ifelse(x == "6 (3 crossed out)", 6, ifelse(x == "7 Still need practice!!", 7 , ifelse(x == "9 10 sometimes I mess up.", 9.5, ifelse(x== 9, "As long as I know what they are.", 9, ifelse(x == "9_12", 10.5, ifelse(x == "S", NA, ifelse(x == "Same response as on the PRE-ASSESSMENT.", NA, ifelse(x == "A + Strongly Agree", "Strongly Agree", ))))) )))))))})
 
 
 head(data)
+data$`Pre-Competent`
 ```
 
