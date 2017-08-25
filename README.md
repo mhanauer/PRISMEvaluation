@@ -209,15 +209,12 @@ dim(dat)
 ```
 Now set up t-tests if there is a difference bewteen post and pre.  Use Wilcoxon Signed-Ranks Test: http://www.uv.es/visualstats/vista-frames/help/lecturenotes/lecture09/lec9part4.html
 
-Here I am getting the statistically significant tests and the percentage increase in medians.
-
-Also grabing the number of particpants here 954
+Here I am getting the statistically significant tests and the percentage increase in means.  I am ok with means for percentage increase, because the scale is 1 through 10.
 ```{r}
 library(MASS)
 write.csv(dat, "dat.csv", row.names = FALSE)
 dat = as.data.frame(read.csv("dat.csv", header = TRUE))
-## Grabbing number of particpants before deleting data
-dim(dat)
+
 dat = as.data.frame(na.omit(dat))
 wilcox.test(dat$Pre.Competent, dat$Post.Competent, paired=TRUE)
 wilcox.test(dat$Pre.Confident, dat$Post.Confident, paired=TRUE)
@@ -231,4 +228,16 @@ datMean$ConfiInc =(datMean$Post.Confident-datMean$Pre.Confident)/datMean$Pre.Con
 datMean$ComiInc =(datMean$Post.Comfort-datMean$Pre.Comfort)/datMean$Pre.Comfort
 datMean = round(datMean,2); datMean
 ```
-Now we need to figure out 
+Now we need to figure out the percentage for the other variables that are somewhat agree (5) or higher. Learned, Effective, Came.Away.With, Recommend
+```{r}
+datLikert = cbind(dat$Learned, dat$Effective, dat$Came.Away.With, dat$Recommend)
+colnames(datLikert) = c("Learned", "Effective", "Came.Away.With", "Recommend")
+n = nrow(datLikert);n
+# No just change everything that is greater than 5 to 1 sum of all them and then divide by n
+datLikert = as.data.frame(apply(datLikert, 2, function(x){ifelse(x >= 5, 1, 0)}))
+datLikert = as.data.frame(apply(datLikert, 2, sum)); head(datLikert)
+datLikert = round((datLikert/n),2)
+colnames(datLikert) = c("Percentage")
+datLikert
+```
+
