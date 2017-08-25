@@ -43,10 +43,7 @@ colnames(data4) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Comp
 head(data4)
 data4$site = rep(4,length(data4$`Pre-Competent`))
 
-data5 = readWorksheetFromFile("IU Pre School Training 12716.xlsx", sheet = 1, startCol = 8, endCol = 17)
-colnames(data5) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
-head(data5)
-data5$site = rep(5,length(data5$`Pre-Competent`))
+
 
 data6 = readWorksheetFromFile("IUSSW Alumni Conference.xlsx", sheet = 1, startCol = 7, endCol = 16)
 colnames(data6) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
@@ -92,11 +89,6 @@ head(data13)
 data13$site = rep(13,length(data13$`Pre-Competent`))
 data13 = as.data.frame(data13[-c(1),])
 
-data14 = readWorksheetFromFile("Merriville Training 7272016.xlsx", sheet = 1, startCol = 8, endCol = 17)
-colnames(data14) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
-head(data14)
-data14 = data14[-c(1),]
-data14$site = rep(14,length(data14$`Pre-Competent`))
 
 data15 = readWorksheetFromFile("Terre Haute 7272016.xlsx", sheet = 1, startCol = 8, endCol = 17)
 colnames(data15) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
@@ -124,12 +116,13 @@ colnames(data19) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Com
 head(data19)
 data19$site = rep(19,length(data19$`Pre-Competent`))
 
-data = rbind(data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12, data13, data14, data15, data16, data17, data18, data19)
+data = rbind(data1, data2, data3, data4, data6, data7, data8, data9, data10, data11, data12, data13, data15, data16, data17, data18, data19)
 data = as.data.frame(data)
 data = apply(data, 2, function(x){ifelse(x == "Blank", NA, x)})
 data = as.data.frame(na.omit(data))
 dim(data)
 data
+
 ```
 Now figure out the levels for each and make sense of each 
 ```{r}
