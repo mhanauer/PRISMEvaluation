@@ -17,6 +17,8 @@ Also include the number of sites they supported and the different types of profe
 Could do a separate analysis on pre and post tests for MCCSC PrePost Tests data set.
 
 Pride board training or Allied media data set had a different set of outcomes variables.
+
+Janet Decker did not have all the same variables so I did not include them.
 ```{r}
 setwd("~/Box Sync/Unreviewed Excel Training Data/ Matt'sExcelTraining Data")
 #setwd("I:/Unreviewed Excel Training Data/ Matt'sExcelTraining Data")
@@ -27,6 +29,7 @@ colnames(data1) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Comp
 head(data1)
 data1$site = rep(1,length(data1$`Pre-Competent`))
 head(data1)
+data1 = data1[-c(1),]; head(data1)
 
 data2 = readWorksheetFromFile("Indiana School Health Conference.xlsx", sheet = 1, startCol = 6, endCol = 15)
 colnames(data2) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
@@ -37,19 +40,20 @@ data3 = readWorksheetFromFile("ISCA Fall 2015.xlsx", sheet = 1, startCol = 8, en
 colnames(data3) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
 head(data3)
 data3$site = rep(3,length(data3$`Pre-Competent`))
+data3 = data3[-c(1),]; head(data3)
 
 data4 = readWorksheetFromFile("IU Pre School Training 12716.xlsx", sheet = 1, startCol = 8, endCol = 17)
 colnames(data4) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
 head(data4)
 data4$site = rep(4,length(data4$`Pre-Competent`))
-
+data4 = data4[-c(1),]; head(data4)
 
 
 data6 = readWorksheetFromFile("IUSSW Alumni Conference.xlsx", sheet = 1, startCol = 7, endCol = 16)
 colnames(data6) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
 head(data6)
 data6$site = rep(6,length(data6$`Pre-Competent`))
-
+data6 = data6[-c(1),]; head(data6)
 
 data7 = readWorksheetFromFile("Ivy Tech 2017 Training.xlsx", sheet = 1, startCol = 6, endCol = 15)
 colnames(data7) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
@@ -94,7 +98,7 @@ data15 = readWorksheetFromFile("Terre Haute 7272016.xlsx", sheet = 1, startCol =
 colnames(data15) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
 head(data15)
 data15$site = rep(15,length(data15$`Pre-Competent`))
-
+data15 = data15[-c(1),]; head(data15)
 
 data16 = readWorksheetFromFile("IUSSW Alumni Conference.xlsx", sheet = 2, startCol = 7, endCol = 16)
 colnames(data16) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
@@ -105,6 +109,7 @@ data17 = readWorksheetFromFile("Youth Services Association Administraiont 901201
 colnames(data17) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
 head(data17)
 data17$site = rep(17,length(data17$`Pre-Competent`))
+data17 = data17[-c(1),]; head(data17)
 
 data18 = readWorksheetFromFile("Youth Services Association Session 2.xlsx", sheet = 1, startCol = 7, endCol = 16)
 colnames(data18) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Competent",	"Post-Confident",	"Post-Comfort",	"Learned",	"Effective",	"Came Away With",	"Recommend")
@@ -116,32 +121,42 @@ colnames(data19) = c("Pre-Competent",	"Pre-Confident",	"Pre-Comfort",	 "Post-Com
 head(data19)
 data19$site = rep(19,length(data19$`Pre-Competent`))
 
+
+# Get rid of first line for data set 1, 3, 4,6, 15, 17 
 data = rbind(data1, data2, data3, data4, data6, data7, data8, data9, data10, data11, data12, data13, data15, data16, data17, data18, data19)
 data = as.data.frame(data)
 data = apply(data, 2, function(x){ifelse(x == "Blank", NA, x)})
 data = as.data.frame(na.omit(data))
 dim(data)
-data
 
 ```
 Now figure out the levels for each and make sense of each 
 ```{r}
-dataPreComp = as.factor(data$`Pre-Competent`)
-levels(dataPreComp)
+
+
+data = apply(data,2, function(x){ifelse(x == "[Crossed out 7] 9 ", 9, ifelse(x == "2 <-> 3", 2.5, ifelse(x == "7 & 10", 8.5, ifelse(x == "7&8", 7.5, ifelse(x == "8-9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "7_8" , 7.5, ifelse(x == "NR", NA, ifelse(x == "6-7", 6.5, ifelse(x == "7_9", 8, ifelse(x == "8_10", 9, ifelse(x == "9 10", 9.5, ifelse(x =="4-5", 4.5, ifelse(x == "7-9", 8, ifelse(x == "N/A", NA, ifelse(x =="\"N/A\"", NA, ifelse(x == "3 I can't create it.", 3, ifelse(x == "6_7", 6.5, ifelse(x == "8&9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "[Crossed out 9] 7", 7, ifelse(x == "3_4", 3.5, ifelse(x == "5 6", 5.5, ifelse(x == "7-8", 8.5, ifelse(x == "9-10", 9.5, ifelse(x == "Not sure", NA, ifelse(x == "9 (10 crossed out) ", 9, ifelse(x == "N/A", NA,ifelse(x == "9 10 ", 9.5, ifelse(x == "[Crossed out 7] 9", 9, ifelse(x == "6 7 ", 6.5, ifelse(x == "9&10", 9.5, ifelse(x == "[Crossed out 9] 10", 10, ifelse(x =="5 Resources helpful", 5, ifelse(x == "7 (Crossed out \"4\")", 7, ifelse(x == "8_9", 8.5, ifelse(x == "9_10", 9.5, ifelse(x == "99", NA, ifelse(x == "[Scribbled out 5]", NA, ifelse(x == "4_5" , 4.5, ifelse(x == "8-8", 8,ifelse(x == "10 (\"Crossed out \"7\")", 10,ifelse(x == "10 (Crossed out 9)", 10, ifelse(x == "5 6 ", 5.5, ifelse(x == "6 I mean, for myself.", 6, ifelse(x == "7 (5 crossed out)", 7, ifelse(x == "9_11", 10.5, ifelse(x == "\"Better\"", NA, x ))))))))))))))))))))))))))))))))))))))))))))))))})
 data = as.data.frame(data)
 
-dataPreCon = as.factor(data$`Pre-Confident`)
+data = apply(data,2, function(x){ifelse(x == "[Scribbled out 5 and underlined 8]", 8, ifelse(x == "10 (Crossed out \"7\")", 10, ifelse(x == "2 \"Willing but a lot to learn", 2, ifelse(x == "5 to 7", 6, ifelse(x == "6 (3 crossed out)", 6, ifelse(x == "7 Still need practice!!", 7 , ifelse(x == "9 10 sometimes I mess up.", 9.5, ifelse(x== "As long as I know what they are.", 9, ifelse(x == "9_12", 10.5, ifelse(x == "S", NA, ifelse(x == "Same response as on the PRE-ASSESSMENT.", NA, ifelse(x == "A + Strongly Agree", 7, ifelse(x== "Strongly Agree", 7, ifelse(x == "Strongly Disagree", 1, ifelse(x == "Disagree", 3, ifelse(x == "Neutral", 4, ifelse(x == "Agree", 6, ifelse(x == "Strongly Agree", 7, ifelse(x == "Circled Strongly Agree and Agree", 6, ifelse(x == "Neural", 4, ifelse(x== "Stringly Agree", 7,ifelse(x == "Strongly Agree [Crossed out \"Strongly Disagree\"]", 7, ifelse(x == "Agree *Strongly Agree*", 6, ifelse(x == "D_N", NA, ifelse(x == "N + Agree", 4, ifelse(x == "Neutral ", 3, ifelse(x == "Nuetral", 3,ifelse(x == "Strongly agree", 5, ifelse(x == "Strongly Agree ", 7,ifelse(x == "N_A", NA, ifelse(x == "Agree ", 6, ifelse(x== "Agree Strongly Agree", 7, ifelse(x == "Stongly Agree", 7, ifelse(x == "[circled \"LGBTQ+ youth\"]", NA, ifelse(x == "Agree Don't directly work w/youth in my job.", 6, ifelse(x == "I learned a lot from the research data statements. That was eye popping to me. I plan to share those findings to my students.", NA, ifelse(x == "Strongly Agree (Police Dept. Sherifs Dept.)", 7, ifelse(x =="Strongly Agree!", 7, ifelse(x == " Strongly Agree", 7, x)))))))))))))))))))))))))))))))))))))))})
+data = as.data.frame(data)
+data = apply(data,2, function(x){ifelse(x == "\"Unsure\"", NA, ifelse(x == "?", NA, ifelse(x == "[Crossed out 8] 10", 10, ifelse(x == "[Crossed out 8] 5 I usually use their name, so I don't make a mistake and offend someone.", 5, ifelse(x == "10 -Had transgender student in class and referred to the student's preferred gender pronouns", 10, ifelse(x == "10 I see no reason why you could object to this as long as you know the preference.", 10, ifelse(x == "2_3", 2.5, ifelse(x ==  "4 My fear is of offending the person by doing something wrong." , 4, ifelse(x=="5_7", 6,ifelse(x == "6 to 10 [wrote \"competent\"]", 8, ifelse(x== "6&7", 6.5, ifelse(x == "8 I'm comfortable using them I'm just horrible @ remembering!!!" , 8, ifelse(x =="N/A 9", 9, ifelse(x == "Using the pronouns to refer to that someone: 9 using the pronouns to refer to myself, or for myself: would depend on what the pronouns were.", NA, ifelse(x == "5_6", 5.5, ifelse(x =="6 I mean, for myself…", 6, ifelse(x == "77", 7, ifelse(x== "6 I mean, for myself…", 6, ifelse(x == "10 [wrote \"& confident\"]", 10, ifelse(x == "9 As long as I know what they are.", 9, ifelse(x =="WOULD NEED TO PRACTICE THIS ONE seemed to go over fast - future maybe give examples more", NA, ifelse(x == "Nuetral ", 4, x))))))))))))))))))))))})
+dat = as.data.frame(data)
+
+dataPreComp = as.factor(dat$`Pre-Competent`)
+levels(dataPreComp)
+
+dataPreCon = as.factor(dat$`Pre-Confident`)
 levels(dataPreCon)
 data = as.data.frame(data)
 
 data = as.data.frame(data)
-dataPreComfort = as.factor(data$`Pre-Comfort`)
+dataPreComfort = as.factor(dat$`Pre-Comfort`)
 levels(dataPreComfort)
 data = as.data.frame(data)
 
 
 data = as.data.frame(data)
-dataPostComp = as.factor(data$`Post-Competent`)
+dataPostComp = as.factor(dat$`Post-Competent`)
 head(dataPostComp)
 levels(dataPostComp)
 data = as.data.frame(data)
@@ -149,15 +164,14 @@ data$`Post-Competent`
 
 data = as.data.frame(data)
 data$`Post-Confident`
-dataPostCon = as.factor(data$`Post-Confident`)
+dataPostCon = as.factor(dat$`Post-Confident`)
 head(dataPostCon)
 levels(dataPostCon)
 data = as.data.frame(data)
 
-# Here need to recode based upon this.  You are grabbing the wrong values somewhere.
 data = as.data.frame(data)
 data$`Post-Comfort`
-dataPostConf = as.factor(data$`Post-Comfort`)
+dataPostConf = as.factor(dat$`Post-Comfort`)
 head(dataPostConf)
 levels(dataPostConf)
 data = as.data.frame(data)
@@ -165,40 +179,32 @@ data = as.data.frame(data)
 
 data = as.data.frame(data)
 data$Learned
-dataLearned = as.factor(data$Learned)
+dataLearned = as.factor(dat$Learned)
 head(dataLearned)
 levels(dataLearned)
 data = as.data.frame(data)
 
 data = as.data.frame(data)
 data$Effective
-dataEffective = as.factor(data$Effective)
+dataEffective = as.factor(dat$Effective)
 head(dataEffective)
 levels(dataEffective)
 data = as.data.frame(data)
 
 data = as.data.frame(data)
 data$`Came Away With`
-dataCAW = as.factor(data$`Came Away With`)
+dataCAW = as.factor(dat$`Came Away With`)
 head(dataCAW)
 levels(dataCAW)
 data = as.data.frame(data)
 
 data = as.data.frame(data)
 data$Recommend
-dataRec = as.factor(data$Recommend)
+dataRec = as.factor(dat$Recommend)
 head(dataRec)
 levels(dataRec)
 data = as.data.frame(data)
 
-data = apply(data,2, function(x){ifelse(x == "[Crossed out 7] 9 ", 9, ifelse(x == "2 <-> 3", 2.5, ifelse(x == "7 & 10", 8.5, ifelse(x == "7&8", 7.5, ifelse(x == "8-9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "7_8" , 7.5, ifelse(x == "NR", NA, ifelse(x == "6-7", 6.5, ifelse(x == "7_9", 8, ifelse(x == "8_10", 9, ifelse(x == "9 10", 9.5, ifelse(x =="4-5", 4.5, ifelse(x == "7-9", 8, ifelse(x == "N/A", NA, ifelse(x =="\"N/A\"", NA, ifelse(x == "3 I can't create it.", 3, ifelse(x == "6_7", 6.5, ifelse(x == "8&9", 8.5, ifelse(x == "No Pre", NA, ifelse(x == "[Crossed out 9] 7", 7, ifelse(x == "3_4", 3.5, ifelse(x == "5 6", 5.5, ifelse(x == "7-8", 8.5, ifelse(x == "9-10", 9.5, ifelse(x == "Not sure", NA, ifelse(x == "9 (10 crossed out) ", 9, ifelse(x == "N/A", NA,ifelse(x == "9 10 ", 9.5, ifelse(x == "[Crossed out 7] 9", 9, ifelse(x == "6 7 ", 6.5, ifelse(x == "9&10", 9.5, ifelse(x == "[Crossed out 9] 10", 10, ifelse(x =="5 Resources helpful", 5, ifelse(x == "7 (Crossed out \"4\")", 7, ifelse(x == "8_9", 8.5, ifelse(x == "9_10", 9.5, ifelse(x == "99", NA, ifelse(x == "[Scribbled out 5]", NA, ifelse(x == "4_5" , 4.5, ifelse(x == "8-8", 8,ifelse(x == "10 (\"Crossed out \"7\")", 10,ifelse(x == "10 (Crossed out 9)", 10, ifelse(x == "5 6 ", 5.5, ifelse(x == "6 I mean, for myself.", 6, ifelse(x == "7 (5 crossed out)", 7, ifelse(x == "9_11", 10.5, ifelse(x == "\"Better\"", NA, x ))))))))))))))))))))))))))))))))))))))))))))))))})
-data = as.data.frame(data)
-
-data = apply(data,2, function(x){ifelse(x == "[Scribbled out 5 and underlined 8]", 8, ifelse(x == "10 (Crossed out \"7\")", 10, ifelse(x == "2 \"Willing but a lot to learn", 2, ifelse(x == "5 to 7", 6, ifelse(x == "6 (3 crossed out)", 6, ifelse(x == "7 Still need practice!!", 7 , ifelse(x == "9 10 sometimes I mess up.", 9.5, ifelse(x== "As long as I know what they are.", 9, ifelse(x == "9_12", 10.5, ifelse(x == "S", NA, ifelse(x == "Same response as on the PRE-ASSESSMENT.", NA, ifelse(x == "A + Strongly Agree", 7, ifelse(x== "Strongly Agree", 7, ifelse(x == "Strongly Disagree", 1, ifelse(x == "Disagree", 3, ifelse(x == "Neutral", 4, ifelse(x == "Agree", 6, ifelse(x == "Strongly Agree", 7, ifelse(x == "Circled Strongly Agree and Agree", 6, ifelse(x == "Neural", 4, ifelse(x== "Stringly Agree", 7,ifelse(x == "Strongly Agree [Crossed out \"Strongly Disagree\"]", 7, ifelse(x == "Agree *Strongly Agree*", 6, ifelse(x == "D_N", NA, ifelse(x == "N + Agree", 4, ifelse(x == "Neutral ", 3, ifelse(x == "Nuetral", 3,ifelse(x == "Strongly agree", 5, ifelse(x == "Strongly Agree ", 7,ifelse(x == "N_A", NA, ifelse(x == "Agree ", 6, ifelse(x== "Agree Strongly Agree", 7, ifelse(x == "Stongly Agree", 7, ifelse(x == "[circled \"LGBTQ+ youth\"]", NA, ifelse(x == "Agree Don't directly work w/youth in my job.", 6, ifelse(x == "I learned a lot from the research data statements. That was eye popping to me. I plan to share those findings to my students.", NA, ifelse(x == "Strongly Agree (Police Dept. Sherifs Dept.)", 7, ifelse(x =="Strongly Agree!", 7, ifelse(x == " Strongly Agree", 7, x)))))))))))))))))))))))))))))))))))))))})
-data = as.data.frame(data)
-data = apply(data,2, function(x){ifelse(x == "\"Unsure\"", NA, ifelse(x == "?", NA, ifelse(x == "[Crossed out 8] 10", 10, ifelse(x == "[Crossed out 8] 5 I usually use their name, so I don't make a mistake and offend someone.", 5, ifelse(x == "10 -Had transgender student in class and referred to the student's preferred gender pronouns", 10, ifelse(x == "10 I see no reason why you could object to this as long as you know the preference.", 10, ifelse(x == "2_3", 2.5, ifelse(x ==  "4 My fear is of offending the person by doing something wrong." , 4, ifelse(x=="5_7", 6,ifelse(x == "6 to 10 [wrote \"competent\"]", 8, ifelse(x== "6&7", 6.5, ifelse(x == "8 I'm comfortable using them I'm just horrible @ remembering!!!" , 8, ifelse(x =="N/A 9", 9, ifelse(x == "Using the pronouns to refer to that someone: 9 using the pronouns to refer to myself, or for myself: would depend on what the pronouns were.", NA, ifelse(x == "5_6", 5.5, ifelse(x =="6 I mean, for myself…", 6, ifelse(x == "77", 7, ifelse(x== "6 I mean, for myself…", 6, ifelse(x == "10 [wrote \"& confident\"]", 10, ifelse(x == "9 As long as I know what they are.", 9, ifelse(x =="WOULD NEED TO PRACTICE THIS ONE seemed to go over fast - future maybe give examples more", NA, x)))))))))))))))))))))})
-dat = as.data.frame(data)
-dim(dat)
 ```
 Now set up t-tests if there is a difference bewteen post and pre.  Use Wilcoxon Signed-Ranks Test: http://www.uv.es/visualstats/vista-frames/help/lecturenotes/lecture09/lec9part4.html
 
